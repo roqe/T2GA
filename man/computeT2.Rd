@@ -28,8 +28,8 @@ computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_ppi,
 This function removes NA, replaces extreme values, and standardizes the data. It also map the data with uniprot identifiers to ensp idnetifiers (when spe="hsa").
 }
 \examples{
-res=computeT2(dat)
-res=computeT2(dat,vex=Reactome_vex,ppi=HitPredict_ppi)
+res1=computeT2(dat1)
+res2=computeT2(dat2,vex=Reactome_vex,ppi=HitPredict_ppi)
 }
 \keyword{$T^2$}
 \keyword{compute}

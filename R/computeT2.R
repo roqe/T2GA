@@ -14,8 +14,8 @@
 #' @export
 #' @importFrom parallel mclapply
 #' @examples
-#' res=computeT2(dat)
-#' res=computeT2(dat,vex=Reactome_vex,ppi=HitPredict_ppi)
+#' res1=computeT2(dat1)
+#' res2=computeT2(dat2,vex=Reactome_vex,ppi=HitPredict_ppi)
 
 computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.05,ncore=7,per=10000){
   if(pathDB=="Reactome"){
