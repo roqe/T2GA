@@ -1,6 +1,6 @@
 #' Compute T^2 and its p-value for each pathway
 #'
-#' This function removes NA, replaces extreme values, and standardizes the data. It also map the data with uniprot identifiers to ensp idnetifiers (when spe="hsa").
+#' This function computes the T^2 score and its significance level.
 #'  
 #' @param data Processed data using importdata function.
 #' @param purb Perturbance threshold, default is 1.5 (after normalization).

@@ -4,7 +4,7 @@
 \alias{importdata}
 \title{Data import and pre-process}
 \usage{
-importdata(fileName1, fileName2 = "", outth = 100)
+importdata(fileName1, fileName2 = data.frame(), outth = 100)
 }
 \arguments{
 \item{fileName1}{Expression data with Uniprot identifiers.}
@@ -17,8 +17,8 @@ importdata(fileName1, fileName2 = "", outth = 100)
 This function removes NA, replaces extreme values, and standardizes the data. It also map the data with uniprot identifiers to ensp idnetifiers.
 }
 \examples{
-dat1=importdata(tcr5)
-dat2=importdata(tcr5,tcr15)
+dat1=importdata(tcr_05)
+dat2=importdata(tcr_05,tcr_15)
 }
 \keyword{pre-process}
 

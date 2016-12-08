@@ -10,8 +10,8 @@
 #' dat1=importdata(tcr_05)
 #' dat2=importdata(tcr_05,tcr_15)
 
-importdata=function(fileName1,fileName2="",outth=100){
-  if(fileName2==""){
+importdata=function(fileName1,fileName2=data.frame(),outth=100){
+  if(nrow(fileName2)==0){
     data<-as.data.frame(predata(as.matrix(fileName1),outth),stringsAsFactors=F)
   }else{
     data1<-predata(as.matrix(fileName1),outth)

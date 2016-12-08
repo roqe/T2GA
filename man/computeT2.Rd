@@ -5,7 +5,7 @@
 \title{Compute T^2 and its p-value for each pathway}
 \usage{
 computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_ppi,
-  intg = TRUE, alpha = 0.05, ncore = 7, per = 10000)
+  intg = TRUE, alpha = 0.05, ncore = 1, per = 10000)
 }
 \arguments{
 \item{data}{Processed data using importdata function.}
@@ -25,9 +25,11 @@ computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_ppi,
 \item{per}{Number of permutation to construct the null distribution.}
 }
 \description{
-This function removes NA, replaces extreme values, and standardizes the data. It also map the data with uniprot identifiers to ensp idnetifiers (when spe="hsa").
+This function computes the T^2 score and its significance level.
 }
 \examples{
+dat1=importdata(tcr_05)
+dat2=importdata(tcr_05,tcr_15)
 res1=computeT2(dat1)
 res2=computeT2(dat2,vex=Reactome_vex,ppi=HitPredict_ppi)
 }
