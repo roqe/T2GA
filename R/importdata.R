@@ -7,8 +7,8 @@
 #' @keywords pre-process
 #' @export
 #' @examples
-#' dat1=importdata(tcr5)
-#' dat2=importdata(tcr5,tcr15)
+#' dat1=importdata(tcr_05)
+#' dat2=importdata(tcr_05,tcr_15)
 
 importdata=function(fileName1,fileName2="",outth=100){
   if(fileName2==""){
