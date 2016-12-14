@@ -29,9 +29,9 @@ This function computes the T^2 score and its significance level.
 }
 \examples{
 dat1=importdata(tcr_05)
-dat2=importdata(tcr_05,tcr_15)
 res1=computeT2(dat1)
-res2=computeT2(dat2,vex=Reactome_vex,ppi=HitPredict_ppi)
+dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
+res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_ppi)
 }
 \keyword{$T^2$}
 \keyword{compute}
