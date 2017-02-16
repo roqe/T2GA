@@ -6,11 +6,12 @@ predata=function(data,outth=100){
   rm=data[,2]=="NAN"|data[,2]=="NaN"|data[,2]=="NA"|data[,2]=="na"|data[,2]=="-"|data[,1]==""|data[,2]==""|is.na(data[,2])|is.na(data[,1])
   data=data[!rm,]
   ### multiple ids one value
+  data[,1]=as.character(data[,1])
   data1=data[nchar(data[,1])<11,]
   data2=data[nchar(data[,1])>10,]
   if(nrow(data2)!=0){
     data2=do.call(rbind,apply(data2,1,function(v){
-      a=unlist(strsplit(as.character(v[1]),"|"))
+      a=unlist(strsplit(as.character(v[1]),"[|]"))
       return(cbind(a,v[2]))
     }))
   }
