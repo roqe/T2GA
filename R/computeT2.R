@@ -17,9 +17,9 @@
 #' dat1=importdata(tcr_05)
 #' res1=computeT2(dat1)
 #' dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
-#' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_ppi)
+#' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
-computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.05,ncore=3,per=10000){
+computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=3,per=10000){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid

@@ -4,8 +4,8 @@
 \alias{computeT2}
 \title{Compute T^2 and its p-value for each pathway}
 \usage{
-computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_ppi,
-  intg = TRUE, alpha = 0.05, ncore = 1, per = 10000)
+computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_v91,
+  intg = TRUE, alpha = 0.05, ncore = 3, per = 10000)
 }
 \arguments{
 \item{data}{Processed data using importdata function.}
@@ -31,7 +31,7 @@ This function computes the T^2 score and its significance level.
 dat1=importdata(tcr_05)
 res1=computeT2(dat1)
 dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
-res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_ppi)
+res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 }
 \keyword{$T^2$}
 \keyword{compute}
