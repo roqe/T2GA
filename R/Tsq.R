@@ -1,5 +1,5 @@
 ##### T-square
-Tsq<-function(pathway,ppi,per,purb){
+Tsq=function(pathway,ppi,per,purb){
   pathway=matrix(pathway[order(pathway[,2]),],ncol=3)
   z=matrix(as.numeric(pathway[,3]))
   m=which(esb_ID[,2]%in%pathway[,2])
@@ -33,18 +33,14 @@ Tsq<-function(pathway,ppi,per,purb){
     }
   }
   T2=TV(z,S)
-  pH0=sapply(1:per,function(i){
+  I=diag(x=dgv,ncol=length(z),nrow=length(z))
+  T2I=TV(z,I)
+  H0=sapply(1:per,function(i){
     tz=rnorm(length(z))
     tz[which(-purb<tz&tz<purb)]=0
-    return(TV(tz,S))
+    return(c(TV(tz,S),TV(tz,I)))
   })
-  pv=(length(which(pH0>as.numeric(T2)))+1)/per
-  T2I=TV(z,diag(x=1,ncol=length(z),nrow=length(z)))
-  pH0I=sapply(1:per,function(i){
-    tz=rnorm(length(z))
-    tz[which(-purb<tz&tz<purb)]=0
-    return(TV(tz,diag(x=1,ncol=length(z),nrow=length(z))))
-  })
-  pvI=(length(which(pH0I>as.numeric(T2I)))+1)/per
-  return(c(as.character(pathway[1,1]),nrow(pathway),paste0(pathway[,2],collapse=","),as.numeric(T2),as.numeric(pv),as.numeric(T2I),as.numeric(pvI)))
+  pv=(length(which(H0[1,]>=as.numeric(T2)))+1)/per
+  pvI=(length(which(H0[2,]>=as.numeric(T2I)))+1)/per
+  return(c(as.character(pathway[1,1]),nrow(pathway),paste0(pathway[,2],collapse=","),T2,pv,T2I,pvI,pchisq(T2,length(z),lower.tail=FALSE)))
 }

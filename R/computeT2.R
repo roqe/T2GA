@@ -59,7 +59,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.
     cm=matrix(pi[which(pi[,2]%in%r[2]),],ncol=3)
     sm=c()
     for(i in 1:nrow(cm)){
-      if(length(setdiff(strsplit(cm[i,3],",")[[1]],rm))==0){ sm=rbind(sm,c(cm[i,1],r[2:7])) }
+      if(length(setdiff(strsplit(cm[i,3],",")[[1]],rm))==0){ sm=rbind(sm,c(cm[i,1],r[2:8])) }
     }
     ttl=pid[pid[,1]%in%sm[,1],]
     if(!is.null(nrow(ttl))){
@@ -72,6 +72,6 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.
   rrr=do.call(rbind,unlist(rr,recursive=F))[,1:6]
   colnames(rrr)=c("Pathway title","Pathway ID","#Mapped","Uniprot IDs","T-square","p-value")
   rrr=rrr[as.numeric(rrr[,6])<=alpha,]
-  print(paste("    #(result pathways): ",nrow(rrr)))
+  print(paste("    #(enriched pathways): ",nrow(rrr)))
   return(rrr)
 }

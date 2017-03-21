@@ -1,6 +1,5 @@
-TV<-function(z,S,dgv=0.4){
+TV<-function(z,S){
   if(length(z)==length(which(z==0))){ return(0) }
   kik=which(z!=0)
-  diag(S)=dgv
-  return(t(z[kik])%*%compSS(S[kik,kik])%*%z[kik])
+  return(t(z[kik])%*%ginv(S[kik,kik])%*%z[kik])
 }

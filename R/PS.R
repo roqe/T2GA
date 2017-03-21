@@ -1,4 +1,4 @@
-PS<-function(pi,cov=0){
+PS=function(pi,cov=0){
   a=strsplit(pi[,3],",")
   tag=a[[which.max(pi[,2])]]
   ll=lapply(a,function(a){ return(length(setdiff(a,tag))) })         

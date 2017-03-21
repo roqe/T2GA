@@ -3,5 +3,4 @@
 export(computeT2)
 export(importdata)
 import(plyr)
-importFrom(MASS,ginv)
 importFrom(parallel,mclapply)
