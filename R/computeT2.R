@@ -19,7 +19,7 @@
 #' dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_ppi)
 
-computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.05,ncore=1,per=10000){
+computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.05,ncore=3,per=10000){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid
@@ -51,7 +51,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_ppi,intg=TRUE,alpha=0.
   r=do.call(rbind,mclapply(input,function(cp){
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
     if(ncol(pathway)==1){pathway=matrix(pathway,ncol=3)}
-    return(Tsq(pathway,ppi,per,purb))
+    return(TS(pathway,ppi,per,purb))
   },mc.cores=ncore,mc.preschedule=FALSE))#
   ##### Result output ----------------------------------------
   rr=apply(r,1,function(r){

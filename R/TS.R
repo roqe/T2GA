@@ -1,5 +1,5 @@
 ##### T-square
-Tsq=function(pathway,ppi,per,purb){
+TS=function(pathway,ppi,per,purb){
   pathway=matrix(pathway[order(pathway[,2]),],ncol=3)
   z=matrix(as.numeric(pathway[,3]))
   m=which(esb_ID[,2]%in%pathway[,2])
