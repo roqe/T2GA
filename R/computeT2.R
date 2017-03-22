@@ -3,12 +3,12 @@
 #' This function computes the T^2 score and its significance level.
 #'  
 #' @param data Processed data using importdata function.
-#' @param purb Perturbance threshold, default is 1.5 (after normalization).
+#' @param purb Perturbance threshold, default is 1 (after normalization).
 #' @param pathDB Pathway database: "KEGG" or "Reactome".
 #' @param ppi Protein-protein interaction database: "STRING_ppi" or "HitPredict_ppi".
 #' @param intg Apply pathway integration or not, default is TRUE.
 #' @param alpha Significance level, default is 0.05.
-#' @param ncore Number of parallel computing cores, default is 7.
+#' @param ncore Number of parallel computing cores, default is 3.
 #' @param per Number of permutation to construct the null distribution.
 #' @keywords compute $T^2$
 #' @export
@@ -19,7 +19,7 @@
 #' dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
-computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=3,per=10000){
+computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=3,per=10000){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid
