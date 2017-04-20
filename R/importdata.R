@@ -10,7 +10,10 @@
 #' dat1=importdata(tcr_05)
 #' dat2=importdata(tcr_05,tcr_15)
 
-importdata=function(fileName1,fileName2=data.frame(),outth=100){
+importdata=function(fileName1,fileName2=data.frame(),outth=10){
+  print("=================================================")
+  print(" Dataset summary:")
+  print("-------------------------------------------------")
   if(nrow(fileName2)==0){
     data<-as.data.frame(predata(as.matrix(fileName1),outth),stringsAsFactors=F)
   }else{
@@ -27,6 +30,7 @@ importdata=function(fileName1,fileName2=data.frame(),outth=100){
   }
   colnames(data)<-c("id","exp")
   class(data$exp)<-"numeric"
-  print(paste("    #(input proteins):  ",nrow(data)))
+  print(paste("    #(input proteins):   ",nrow(data)))
+  print("=================================================")
   return(data)
 }

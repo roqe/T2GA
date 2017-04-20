@@ -1,9 +1,9 @@
 ##### T-square
-TS=function(pathway,ppi,per,purb){
+TS=function(pathway,ppi,purb,dgv=0.4){
   pathway=matrix(pathway[order(pathway[,2]),],ncol=3)
   z=matrix(as.numeric(pathway[,3]))
   m=which(esb_ID[,2]%in%pathway[,2])
-  S=diag(x=1,ncol=length(z),nrow=length(z))
+  S=diag(x=dgv,ncol=length(z),nrow=length(z))
   if(dim(S)[1]!=1){
     for(i in 2:nrow(S)){
       for(j in 1:(i-1)){
@@ -32,15 +32,13 @@ TS=function(pathway,ppi,per,purb){
       }
     }
   }
+  S=make.positive.definite(S)
+  r=rankMatrix(S,tol=1e-10)[1]
   T2=TV(z,S)
   I=diag(x=dgv,ncol=length(z),nrow=length(z))
   T2I=TV(z,I)
-  H0=sapply(1:per,function(i){
-    tz=rnorm(length(z))
-    tz[which(-purb<tz&tz<purb)]=0
-    return(c(TV(tz,S),TV(tz,I)))
-  })
-  pv=(length(which(H0[1,]>=as.numeric(T2)))+1)/per
-  pvI=(length(which(H0[2,]>=as.numeric(T2I)))+1)/per
-  return(c(as.character(pathway[1,1]),nrow(pathway),paste0(pathway[,2],collapse=","),T2,pv,T2I,pvI,pchisq(T2,length(z),lower.tail=FALSE)))
+  return(c(as.character(pathway[1,1]),
+           paste0(pathway[,2],collapse=","),nrow(pathway),r,
+           T2,pchisq(T2,r,lower.tail = F),
+           T2I,pchisq(T2I,r,lower.tail = F)))
 }

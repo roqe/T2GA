@@ -3,13 +3,12 @@
 #' This function computes the T^2 score and its significance level.
 #'  
 #' @param data Processed data using importdata function.
-#' @param purb Perturbance threshold, default is 1 (after normalization).
+#' @param purb Perturbance threshold, default is 1.5 (after normalization).
 #' @param pathDB Pathway database: "KEGG" or "Reactome".
 #' @param ppi Protein-protein interaction database: "STRING_ppi" or "HitPredict_ppi".
 #' @param intg Apply pathway integration or not, default is TRUE.
 #' @param alpha Significance level, default is 0.05.
-#' @param ncore Number of parallel computing cores, default is 3.
-#' @param per Number of permutation to construct the null distribution.
+#' @param ncore Number of parallel computing cores, default is 7.
 #' @keywords compute $T^2$
 #' @export
 #' @importFrom parallel mclapply
@@ -19,7 +18,7 @@
 #' dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
-computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=3,per=10000){
+computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=7){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid
@@ -27,14 +26,18 @@ computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05
     vex=KEGG_vex
     pid=KEGG_pid
   }
+  print("=================================================")
+  print(paste0(" Using pathway database:  ",pathDB))
+  print(paste0(" Using ppi database:      ",ifelse(nchar(ppi[1,1])>8,"STRING","HitPredict")))
+  print("-------------------------------------------------")
   data[-purb<data[,2]&data[,2]<purb,2]=0  
   ### data mapping
   n=which(vex[,2]%in%data[,1])
-  print(paste("    #(mapped entries):  ",length(unique(vex[vex[,2]%in%data[,1],2]))))
+  print(paste("    #(mapped entries):   ",length(unique(vex[vex[,2]%in%data[,1],2]))))
   vexData=cbind(vex[n,],as.array(apply(vex[n,],1,function(v){ return(data[data[,1]%in%v[2],2]) })))
   colnames(vexData)[3]="exp"
   mp=table(vexData[,1])
-  print(paste("    #(mapped pathways): ",length(mp[mp!=0])))
+  print(paste("    #(mapped pathways):  ",length(mp[mp!=0])))
   ### pathway integration
   pi=t(sapply(array(names(mp[mp!=0])),function(cp){
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
@@ -42,7 +45,7 @@ computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05
     return(c(as.character(pathway[1,1]),nrow(pathway),paste0(pathway[,2],collapse=",")))
   }))
   ps=PS(pi)
-  print(paste("    #(summary pathways):",length(ps)))
+  print(paste("    #(summary pathways): ",length(ps)))
   ### compute T2
   rplist=unlist(lapply(ps,function(ps){return(as.matrix(ps)[1,1])}))
   if(intg==TRUE){
@@ -51,15 +54,15 @@ computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05
   r=do.call(rbind,mclapply(input,function(cp){
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
     if(ncol(pathway)==1){pathway=matrix(pathway,ncol=3)}
-    return(TS(pathway,ppi,per,purb))
+    return(TS(pathway,ppi,purb))
   },mc.cores=ncore,mc.preschedule=FALSE))#
   ##### Result output ----------------------------------------
   rr=apply(r,1,function(r){
-    rm=strsplit(r[3],",")[[1]]
-    cm=matrix(pi[which(pi[,2]%in%r[2]),],ncol=3)
+    rm=strsplit(r[2],",")[[1]]
+    cm=matrix(pi[which(pi[,2]%in%r[3]),],ncol=3)
     sm=c()
     for(i in 1:nrow(cm)){
-      if(length(setdiff(strsplit(cm[i,3],",")[[1]],rm))==0){ sm=rbind(sm,c(cm[i,1],r[2:8])) }
+      if(length(setdiff(strsplit(cm[i,3],",")[[1]],rm))==0){ sm=rbind(sm,c(cm[i,1],r[-1])) }
     }
     ttl=pid[pid[,1]%in%sm[,1],]
     if(!is.null(nrow(ttl))){
@@ -69,9 +72,10 @@ computeT2=function(data,purb=1,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05
     }
     return(list(cbind(ttl,sm)))
   })
-  rrr=do.call(rbind,unlist(rr,recursive=F))[,1:6]
-  colnames(rrr)=c("Pathway title","Pathway ID","#Mapped","Uniprot IDs","T-square","p-value")
-  rrr=rrr[as.numeric(rrr[,6])<=alpha,]
-  print(paste("    #(enriched pathways): ",nrow(rrr)))
+  rrr=do.call(rbind,unlist(rr,recursive=F))[,1:7]
+  colnames(rrr)=c("Pathway title","Pathway ID","Uniprot IDs","#Mapped","df","T-square","p-value")
+  rrr=rrr[as.numeric(rrr[,7])<=alpha,]
+  print(paste("    #(enriched pathways):",nrow(rrr)))
+  print("=================================================")
   return(rrr)
 }

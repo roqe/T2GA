@@ -5,7 +5,7 @@
 \title{Compute T^2 and its p-value for each pathway}
 \usage{
 computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_v91,
-  intg = TRUE, alpha = 0.05, ncore = 3, per = 10000)
+  intg = TRUE, alpha = 0.05, ncore = 7)
 }
 \arguments{
 \item{data}{Processed data using importdata function.}
@@ -21,8 +21,6 @@ computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_v91,
 \item{alpha}{Significance level, default is 0.05.}
 
 \item{ncore}{Number of parallel computing cores, default is 7.}
-
-\item{per}{Number of permutation to construct the null distribution.}
 }
 \description{
 This function computes the T^2 score and its significance level.

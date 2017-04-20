@@ -4,7 +4,7 @@
 \alias{importdata}
 \title{Data import and pre-process}
 \usage{
-importdata(fileName1, fileName2 = data.frame(), outth = 100)
+importdata(fileName1, fileName2 = data.frame(), outth = 10)
 }
 \arguments{
 \item{fileName1}{Expression data with Uniprot identifiers.}

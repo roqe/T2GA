@@ -1,12 +1,11 @@
 #' @import plyr
 
-predata=function(data,outth=100){
-  print(paste("    #(input site/probe):",nrow(data)))
+predata=function(data,outth=10){
+  print(paste("    #(input site/probe): ",nrow(data)))
   ### remove missing
   rm=data[,2]=="NAN"|data[,2]=="NaN"|data[,2]=="NA"|data[,2]=="na"|data[,2]=="-"|data[,1]==""|data[,2]==""|is.na(data[,2])|is.na(data[,1])
   data=data[!rm,]
   ### multiple ids one value
-  data[,1]=as.character(data[,1])
   data1=data[nchar(data[,1])<11,]
   data2=data[nchar(data[,1])>10,]
   if(nrow(data2)!=0){
