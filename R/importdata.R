@@ -7,8 +7,8 @@
 #' @keywords pre-process
 #' @export
 #' @examples
-#' dat1=importdata(tcr_05)
-#' dat2=importdata(tcr_05,tcr_15)
+#' dat1=importdata(TCR_5min)
+#' dat2=importdata(TCR_5min,TCR_15min)
 
 importdata=function(fileName1,fileName2=data.frame(),outth=10){
   print("=================================================")

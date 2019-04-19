@@ -33,4 +33,3 @@ res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 }
 \keyword{$T^2$}
 \keyword{compute}
-

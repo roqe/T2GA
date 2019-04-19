@@ -12,10 +12,13 @@
 #' @keywords compute $T^2$
 #' @export
 #' @importFrom parallel mclapply
+#' @importFrom corpcor make.positive.definite
+#' @importFrom Matrix rankMatrix
+#' @importFrom MASS ginv
 #' @examples
-#' dat1=importdata(tcr_05)
+#' dat1=importdata(TCR_5min)
 #' res1=computeT2(dat1)
-#' dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
+#' dat2=importdata(TCR_5min,TCR_15min)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
 computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=7){
@@ -48,9 +51,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.
   print(paste("    #(summary pathways): ",length(ps)))
   ### compute T2
   rplist=unlist(lapply(ps,function(ps){return(as.matrix(ps)[1,1])}))
-  if(intg==TRUE){
-    input=rplist
-  }else{ input=pi[,1] }
+  input=ifelse(intg,rplist,pi[,1])
   r=do.call(rbind,mclapply(input,function(cp){
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
     if(ncol(pathway)==1){pathway=matrix(pathway,ncol=3)}
