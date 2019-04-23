@@ -3,4 +3,7 @@
 export(computeT2)
 export(importdata)
 import(plyr)
+importFrom(MASS,ginv)
+importFrom(Matrix,rankMatrix)
+importFrom(corpcor,make.positive.definite)
 importFrom(parallel,mclapply)

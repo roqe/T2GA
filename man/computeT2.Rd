@@ -26,9 +26,9 @@ computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_v91,
 This function computes the T^2 score and its significance level.
 }
 \examples{
-dat1=importdata(tcr_05)
+dat1=importdata(TCR_5min)
 res1=computeT2(dat1)
-dat2=importdata(fileName1=tcr_05,fileName2=tcr_15)
+dat2=importdata(TCR_5min,TCR_15min)
 res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 }
 \keyword{$T^2$}

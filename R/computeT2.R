@@ -8,7 +8,7 @@
 #' @param ppi Protein-protein interaction database: "STRING_ppi" or "HitPredict_ppi".
 #' @param intg Apply pathway integration or not, default is TRUE.
 #' @param alpha Significance level, default is 0.05.
-#' @param ncore Number of parallel computing cores, default is 7.
+#' @param ncore Number of parallel computing cores, default is 1.
 #' @keywords compute $T^2$
 #' @export
 #' @importFrom parallel mclapply
@@ -21,7 +21,7 @@
 #' dat2=importdata(TCR_5min,TCR_15min)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
-computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=7){
+computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=1){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid
@@ -51,7 +51,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.
   print(paste("    #(summary pathways): ",length(ps)))
   ### compute T2
   rplist=unlist(lapply(ps,function(ps){return(as.matrix(ps)[1,1])}))
-  input=ifelse(intg,rplist,pi[,1])
+  input=unlist(ifelse(intg,list(rplist),list(pi[,1])))
   r=do.call(rbind,mclapply(input,function(cp){
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
     if(ncol(pathway)==1){pathway=matrix(pathway,ncol=3)}
