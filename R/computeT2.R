@@ -33,7 +33,8 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.
   print(paste0(" Using pathway database:  ",pathDB))
   print(paste0(" Using ppi database:      ",ifelse(nchar(ppi[1,1])>8,"STRING","HitPredict")))
   print("-------------------------------------------------")
-  data[-purb<data[,2]&data[,2]<purb,2]=0  
+  # data[-purb<data[,2]&data[,2]<purb,2]=0  
+  data=data[-purb>data[,2]|data[,2]>purb,]
   ### data mapping
   n=which(vex[,2]%in%data[,1])
   print(paste("    #(mapped entries):   ",length(unique(vex[vex[,2]%in%data[,1],2]))))
@@ -56,7 +57,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.
     pathway=as.matrix(vexData[which(vexData[,1]%in%cp),])
     if(ncol(pathway)==1){pathway=matrix(pathway,ncol=3)}
     return(TS(pathway,ppi,purb))
-  },mc.cores=ncore,mc.preschedule=FALSE))#
+  },mc.cores=ncore))#
   ##### Result output ----------------------------------------
   rr=apply(r,1,function(r){
     rm=strsplit(r[2],",")[[1]]
