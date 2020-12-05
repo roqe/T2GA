@@ -4,8 +4,15 @@
 \alias{computeT2}
 \title{Compute T^2 and its p-value for each pathway}
 \usage{
-computeT2(data, purb = 1.5, pathDB = "KEGG", ppi = STRING_v91,
-  intg = TRUE, alpha = 0.05, ncore = 1)
+computeT2(
+  data,
+  purb = 1.5,
+  pathDB = "KEGG",
+  ppi = STRING_v91,
+  intg = TRUE,
+  alpha = 0.05,
+  ncore = 1
+)
 }
 \arguments{
 \item{data}{Processed data using importdata function.}
