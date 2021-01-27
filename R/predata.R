@@ -1,6 +1,6 @@
 #' @import plyr
 
-predata=function(data,outth=10,type="exp"){
+predata=function(data,outth=10,typ="exp"){
   print(paste("    #(input site/probe): ",nrow(data)))
   ### remove missing
   rm=data[,2]=="NAN"|data[,2]=="NaN"|data[,2]=="NA"|data[,2]=="na"|data[,2]=="-"|data[,1]==""|data[,2]==""|is.na(data[,2])|is.na(data[,1])
@@ -24,7 +24,7 @@ predata=function(data,outth=10,type="exp"){
   class(data[,2])="numeric"
   data=ddply(data,.(id),summarise,M=median(exp))
   ### normalization
-  if(type=="pv"){
+  if(typ=="pv"){
     data[,2]=safe_z(p.adjust(data[,2],method = "fdr"))
   }else{
     if(min(data[,2])>=0){

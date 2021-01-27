@@ -11,15 +11,15 @@
 #' dat1=importdata(TCR_5min)
 #' dat2=importdata(TCR_5min,TCR_15min)
 
-importdata=function(fileName1,fileName2=data.frame(),outth=10,type="exp"){
+importdata=function(fileName1,fileName2=data.frame(),outth=10,typ="exp"){
   print("=================================================")
   print(" Dataset summary:")
   print("-------------------------------------------------")
   if(nrow(fileName2)==0){
-    data<-as.data.frame(predata(as.matrix(fileName1),outth),stringsAsFactors=F)
+    data<-as.data.frame(predata(as.matrix(fileName1),outth,typ),stringsAsFactors=F)
   }else{
-    data1<-predata(as.matrix(fileName1),outth,type)
-    data2<-predata(as.matrix(fileName2),outth,type)
+    data1<-predata(as.matrix(fileName1),outth,typ)
+    data2<-predata(as.matrix(fileName2),outth,typ)
     #time series, divide time 1 and time 2
     data12<-setdiff(data1$id,data2$id)
     data12<-cbind(data12,data1[data1$id%in%data12,2]-data2$M[which.min(abs(data2$M))])
