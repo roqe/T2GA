@@ -4,14 +4,16 @@
 \alias{importdata}
 \title{Data import and pre-process}
 \usage{
-importdata(fileName1, fileName2 = data.frame(), outth = 10)
+importdata(fileName1, fileName2 = data.frame(), outth = 10, type = "exp")
 }
 \arguments{
 \item{fileName1}{Expression data with Uniprot identifiers.}
 
 \item{fileName2}{Expression data with Uniprot identifiers, optional for time-course data}
 
-\item{outth}{Outlier threshold, default is 100.}
+\item{outth}{Outlier threshold, default is 10.}
+
+\item{type}{data type, options: "exp" for expression values, "pv" for p-values, default is "exp"}
 }
 \description{
 This function removes NA, replaces extreme values, and standardizes the data. It also map the data with uniprot identifiers to ensp idnetifiers.

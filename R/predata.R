@@ -1,6 +1,6 @@
 #' @import plyr
 
-predata=function(data,outth=10){
+predata=function(data,outth=10,type="exp"){
   print(paste("    #(input site/probe): ",nrow(data)))
   ### remove missing
   rm=data[,2]=="NAN"|data[,2]=="NaN"|data[,2]=="NA"|data[,2]=="na"|data[,2]=="-"|data[,1]==""|data[,2]==""|is.na(data[,2])|is.na(data[,1])
@@ -24,14 +24,18 @@ predata=function(data,outth=10){
   class(data[,2])="numeric"
   data=ddply(data,.(id),summarise,M=median(exp))
   ### normalization
-  if(min(data[,2])>=0){
-    data[data[,2]==0,2]=min(data[data[,2]!=0,2])
-    data[,2]=log2(data[,2])
+  if(type=="pv"){
+    data[,2]=safe_z(p.adjust(data[,2],method = "fdr"))
+  }else{
+    if(min(data[,2])>=0){
+      data[data[,2]==0,2]=min(data[data[,2]!=0,2])
+      data[,2]=log2(data[,2])
+    }
+    ### outliers replacement
+    out=data[,2]>=outth|data[,2]<=-outth
+    data[out,2]=data[out,2]/abs(data[out,2])*max(abs(data[,2]))
+    ### standardization
+    data[,2]=data[,2]/sd(data[,2])
   }
-  ### outliers replacement
-  out=data[,2]>=outth|data[,2]<=-outth
-  data[out,2]=data[out,2]/abs(data[out,2])*max(abs(data[,2]))
-  ### standardization
-  data[,2]=data[,2]/sd(data[,2])
   return(data)
 }

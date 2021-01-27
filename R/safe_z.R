@@ -1,0 +1,1 @@
+safe_z=function(pp){ return(ifelse(pp<2e-16,8.3,qnorm(1-pp/2))) }
