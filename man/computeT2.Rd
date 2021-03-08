@@ -8,7 +8,7 @@ computeT2(
   data,
   purb = 1.5,
   pathDB = "KEGG",
-  ppi = STRING_v91,
+  ppi = STRING_v11,
   intg = TRUE,
   alpha = 0.05,
   ncore = 1

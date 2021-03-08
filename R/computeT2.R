@@ -15,13 +15,14 @@
 #' @importFrom corpcor make.positive.definite
 #' @importFrom Matrix rankMatrix
 #' @importFrom MASS ginv
+#' @importFrom data.table rbindlist
 #' @examples
 #' dat1=importdata(TCR_5min)
 #' res1=computeT2(dat1)
 #' dat2=importdata(TCR_5min,TCR_15min)
 #' res2=computeT2(dat2,pathDB="Reactome",ppi=HitPredict_v4)
 
-computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.05,ncore=1){
+computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v11,intg=TRUE,alpha=0.05,ncore=1){
   if(pathDB=="Reactome"){
     vex=Reactome_vex
     pid=Reactome_pid
@@ -76,7 +77,7 @@ computeT2=function(data,purb=1.5,pathDB="KEGG",ppi=STRING_v91,intg=TRUE,alpha=0.
   })
   rrr=do.call(rbind,unlist(rr,recursive=F))[,1:7]
   colnames(rrr)=c("Pathway title","Pathway ID","Uniprot IDs","#Mapped","df","T-square","p-value")
-  rrr=rrr[as.numeric(rrr[,7])<=alpha,]
+  rrr=as.data.table(unique(rrr[as.numeric(rrr[,7])<=alpha,]))
   print(paste("    #(enriched pathways):",nrow(rrr)))
   print("=================================================")
   return(rrr)
